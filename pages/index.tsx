@@ -16,7 +16,7 @@ import styles from "../styles/Home.module.css";
 import { parseIneligibility } from "../utils/parseIneligibility";
 
 const Home = () => {
-  const tokenAddress = "0x09C03604079a591eC47745b85a9998E99a99D1B5";
+  const tokenAddress = "0xa8b4E25759f96CA4a6FCa5473DDeB67012dDc1F2";
   const { contract } = useContract(tokenAddress, "token-drop");
   const address = useAddress();
   const [quantity, setQuantity] = useState(1);
@@ -46,7 +46,7 @@ const Home = () => {
     try {
       return BigNumber.from(activeClaimCondition.data?.availableSupply || 0);
     } catch {
-      return BigNumber.from(1_000_000_000);
+      return BigNumber.from(1_000_000_000_000_000);
     }
   }, [activeClaimCondition.data?.availableSupply]);
 
@@ -58,7 +58,7 @@ const Home = () => {
     const n = totalAvailableSupply.add(
       BigNumber.from(claimedSupply.data?.value || 0)
     );
-    if (n.gte(1_000_000_000)) {
+    if (n.gte(1_000_000_000_000_000)) {
       return "";
     }
     return n.toString();
@@ -88,7 +88,7 @@ const Home = () => {
         activeClaimCondition.data?.maxClaimableSupply || 0
       );
     } catch (e) {
-      bnMaxClaimable = BigNumber.from(1_000_000_000);
+      bnMaxClaimable = BigNumber.from(1_000_000_000_000_000);
     }
 
     let perTransactionClaimable;
@@ -97,7 +97,7 @@ const Home = () => {
         activeClaimCondition.data?.maxClaimablePerWallet || 0
       );
     } catch (e) {
-      perTransactionClaimable = BigNumber.from(1_000_000_000);
+      perTransactionClaimable = BigNumber.from(1_000_000_000_000_000);
     }
 
     if (perTransactionClaimable.lte(bnMaxClaimable)) {
@@ -109,7 +109,7 @@ const Home = () => {
     if (snapshotClaimable) {
       if (snapshotClaimable === "0") {
         // allowed unlimited for the snapshot
-        bnMaxClaimable = BigNumber.from(1_000_000_000);
+        bnMaxClaimable = BigNumber.from(1_000_000_000_000_000);
       } else {
         try {
           bnMaxClaimable = BigNumber.from(snapshotClaimable);
@@ -126,8 +126,8 @@ const Home = () => {
       max = bnMaxClaimable;
     }
 
-    if (max.gte(1_000_000_000)) {
-      return 1_000_000_000;
+    if (max.gte(1_000_000_000_000_000)) {
+      return 1_000_000_000_000_000;
     }
     return max.toNumber();
   }, [
