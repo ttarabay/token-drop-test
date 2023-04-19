@@ -11,7 +11,7 @@ import {
 } from "@thirdweb-dev/react";
 import { BigNumber, utils } from "ethers";
 import Image from "next/image";
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import styles from "../styles/Home.module.css";
 import { parseIneligibility } from "../utils/parseIneligibility";
 
@@ -35,12 +35,43 @@ const Home = () => {
 
   const claimedSupply = useTokenSupply(contract);
 
+  const [showTweetPopup, setShowTweetPopup] = useState(false);
+
+  const handleClaimSuccess = () => {
+    setShowTweetPopup(true);
+  };
+
+  const [showError, setShowError] = useState(false);
+  
+  
+  const handleClaimFail = () => {
+    setShowError(true);
+  };
+
+  useEffect(() => {
+    if (showTweetPopup) {
+      const timeout = setTimeout(() => {
+        setShowTweetPopup(false);
+      }, 15000);
+      return () => clearTimeout(timeout);
+    }
+  }, [showTweetPopup]);
+
+
+  useEffect(() => {
+    if (showError) {
+      const timeout = setTimeout(() => {
+        setShowError(false);
+      }, 5000);
+      return () => clearTimeout(timeout);
+    }
+  }, [showError]);
+
   function handleTweetClick(event: React.MouseEvent<HTMLButtonElement>) {
     const tweetText = encodeURIComponent("Just claimed my $BOZO, certified now!");
     const tweetUrl = `https://twitter.com/intent/tweet?text=${tweetText}`;
     window.open(tweetUrl);
   }
-  
 
   const totalAvailableSupply = useMemo(() => {
     try {
@@ -170,6 +201,8 @@ const Home = () => {
     isSoldOut,
   ]);
 
+  
+  
   const isLoading = useMemo(() => {
     return activeClaimCondition.isLoading || !contract;
   }, [activeClaimCondition.isLoading, contract]);
@@ -188,7 +221,7 @@ const Home = () => {
         activeClaimCondition.data?.currencyMetadata.value || 0
       );
       if (pricePerToken.eq(0)) {
-        return "Mint (Free)";
+        return "Claim (Free)";
       }
       return `Mint (${priceToMint})`;
     }
@@ -272,15 +305,50 @@ const Home = () => {
         <Web3Button
           contractAddress={tokenAddress}
           action={(contract) => contract.erc20.claim(quantity)}
-          onSuccess={() => alert("Claimed!")}
-          onError={(err) => alert(err)}
-        >
-          {buttonText}
-        </Web3Button>
+          onSuccess={handleClaimSuccess}
+          onError={handleClaimFail}
+          >
+            {buttonText}
+          </Web3Button>
       </div>
-      <button onClick={handleTweetClick} className={styles.button}>Create Tweet</button>
+      {showError && (
+        <div className={styles.popupContainer}>
+          <div className={styles.tweetPopup}>
+            <h2>TX failed</h2>
+          </div>
+        </div>
+      )}
+
+      {showTweetPopup && (
+        <div className={styles.popupContainer}>
+          <div className={styles.tweetPopup}>
+            <h2>Claim successful!</h2>
+            <p>Share on Twitter to let your friends know:</p>
+            <button onClick={handleTweetClick} className={styles.button}>
+              Create Tweet
+            </button>
+          </div>
+        </div>
+      )}
+      {claimedSupply.isSuccess && (
+        <div className={styles.linkContainer}>
+          <p className={styles.smartContractLink}>
+            Smart Contract Address:{" "}
+            <a
+              href={`https://etherscan.io/address/${tokenAddress}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {tokenAddress}
+            </a>
+          </p>
+        </div>
+      )}
     </div>
   );
 };
 
 export default Home;
+
+    
+    
