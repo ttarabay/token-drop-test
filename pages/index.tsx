@@ -16,7 +16,7 @@ import styles from "../styles/Home.module.css";
 import { parseIneligibility } from "../utils/parseIneligibility";
 
 const Home = () => {
-  const tokenAddress = "0x03728725240b021887355c943d040BF933F3d5F0";
+  const tokenAddress = "0x09C03604079a591eC47745b85a9998E99a99D1B5";
   const { contract } = useContract(tokenAddress, "token-drop");
   const address = useAddress();
   const [quantity, setQuantity] = useState(1);
@@ -34,6 +34,13 @@ const Home = () => {
   });
 
   const claimedSupply = useTokenSupply(contract);
+
+  function handleTweetClick(event: React.MouseEvent<HTMLButtonElement>) {
+    const tweetText = encodeURIComponent("Just claimed my $BOZO, certified now!");
+    const tweetUrl = `https://twitter.com/intent/tweet?text=${tweetText}`;
+    window.open(tweetUrl);
+  }
+  
 
   const totalAvailableSupply = useMemo(() => {
     try {
@@ -205,6 +212,7 @@ const Home = () => {
 
   return (
     <div className={styles.container}>
+      <script async src="https://platform.twitter.com/widgets.js"></script>
       {(claimConditions.data &&
         claimConditions.data.length > 0 &&
         activeClaimCondition.isError) ||
@@ -262,8 +270,6 @@ const Home = () => {
           className={`${styles.textInput} ${styles.noGapBottom}`}
         />
         <Web3Button
-          accentColor="#5204BF"
-          colorMode="dark"
           contractAddress={tokenAddress}
           action={(contract) => contract.erc20.claim(quantity)}
           onSuccess={() => alert("Claimed!")}
@@ -272,6 +278,7 @@ const Home = () => {
           {buttonText}
         </Web3Button>
       </div>
+      <button onClick={handleTweetClick} className={styles.button}>Create Tweet</button>
     </div>
   );
 };
