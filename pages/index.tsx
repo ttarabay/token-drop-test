@@ -52,7 +52,7 @@ const Home = () => {
     if (showTweetPopup) {
       const timeout = setTimeout(() => {
         setShowTweetPopup(false);
-      }, 15000);
+      }, 30000);
       return () => clearTimeout(timeout);
     }
   }, [showTweetPopup]);
