@@ -19,7 +19,7 @@ const Home = () => {
   const tokenAddress = "0x8aC4855B59Ce5227d343983f73a4c14FF6241B4c";
   const { contract } = useContract(tokenAddress, "token-drop");
   const address = useAddress();
-  const [quantity, setQuantity] = useState(696969);
+  const [quantity, setQuantity] = useState(13939393939394);
   const { data: contractMetadata } = useContractMetadata(contract);
 
   const claimConditions = useClaimConditions(contract);
