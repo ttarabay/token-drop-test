@@ -19,7 +19,7 @@ const Home = () => {
   const tokenAddress = "0x8aC4855B59Ce5227d343983f73a4c14FF6241B4c";
   const { contract } = useContract(tokenAddress, "token-drop");
   const address = useAddress();
-  const [quantity, setQuantity] = useState(13939393939394);
+  const [quantity, setQuantity] = useState(0);
   const { data: contractMetadata } = useContractMetadata(contract);
 
   const claimConditions = useClaimConditions(contract);
@@ -158,7 +158,7 @@ const Home = () => {
     }
 
     if (max.gte(1_000_000_000_000_000)) {
-      return 1_000_000_000_000_000;
+      return 0;
     }
     return max.toNumber();
   }, [
@@ -286,22 +286,22 @@ const Home = () => {
       <hr className={styles.divider} />
 
       <div className={styles.claimGrid}>
+      <button onClick={() => setQuantity(maxClaimable)}>Max</button>
       <input
         type="number"
-        placeholder="Enter amount to claim"
+        placeholder="Enter claim amount"
         onChange={(e) => {
           const value = parseInt(e.target.value);
           if (value > maxClaimable) {
             setQuantity(maxClaimable);
-          } else if (value < 13939393939394) {
-            setQuantity(13939393939394);
+          } else if (value < 1) {
+            setQuantity(maxClaimable);
           } else {
             setQuantity(value);
           }
         }}
         value={quantity}
-        step={13939393939394}
-        defaultValue={13939393939394}
+        step={696969}
         className={`${styles.textInput} ${styles.noGapBottom}`}
       />
 
