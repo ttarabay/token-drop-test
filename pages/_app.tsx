@@ -7,11 +7,11 @@ import "../styles/globals.css";
 import { AppProps } from "next/app";
 
 // This is the chainId your dApp will work on.
-const activeChainId = ChainId.Goerli;
+const activeChainId = ChainId.Mainnet;
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <ThirdwebProvider activeChain={activeChainId}>
+    <ThirdwebProvider activeChain={activeChainId}> 
       <div>
         <Head>
           <title>$BOZO Claim</title>

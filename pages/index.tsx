@@ -16,10 +16,10 @@ import styles from "../styles/Home.module.css";
 import { parseIneligibility } from "../utils/parseIneligibility";
 
 const Home = () => {
-  const tokenAddress = "0xa8b4E25759f96CA4a6FCa5473DDeB67012dDc1F2";
+  const tokenAddress = "0x8aC4855B59Ce5227d343983f73a4c14FF6241B4c";
   const { contract } = useContract(tokenAddress, "token-drop");
   const address = useAddress();
-  const [quantity, setQuantity] = useState(1);
+  const [quantity, setQuantity] = useState(696969);
   const { data: contractMetadata } = useContractMetadata(contract);
 
   const claimConditions = useClaimConditions(contract);
@@ -261,13 +261,13 @@ const Home = () => {
           </p>
         ))}
 
-      {isLoading ? (
+      {false ? (
         <p>Loading...</p>
       ) : (
         <>
           {contractMetadata?.image && (
             <Image
-              src={contractMetadata?.image}
+              src={'/bozo.png'}
               alt={contractMetadata?.name!}
               width={200}
               height={200}
@@ -286,22 +286,25 @@ const Home = () => {
       <hr className={styles.divider} />
 
       <div className={styles.claimGrid}>
-        <input
-          type="number"
-          placeholder="Enter amount to claim"
-          onChange={(e) => {
-            const value = parseInt(e.target.value);
-            if (value > maxClaimable) {
-              setQuantity(maxClaimable);
-            } else if (value < 1) {
-              setQuantity(1);
-            } else {
-              setQuantity(value);
-            }
-          }}
-          value={quantity}
-          className={`${styles.textInput} ${styles.noGapBottom}`}
-        />
+      <input
+        type="number"
+        placeholder="Enter amount to claim"
+        onChange={(e) => {
+          const value = parseInt(e.target.value);
+          if (value > maxClaimable) {
+            setQuantity(maxClaimable);
+          } else if (value < 696969) {
+            setQuantity(696969);
+          } else {
+            setQuantity(value);
+          }
+        }}
+        value={quantity}
+        step={696969}
+        defaultValue={696969}
+        className={`${styles.textInput} ${styles.noGapBottom}`}
+      />
+
         <Web3Button
           contractAddress={tokenAddress}
           action={(contract) => contract.erc20.claim(quantity)}
