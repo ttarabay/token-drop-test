@@ -294,14 +294,14 @@ const Home = () => {
           if (value > maxClaimable) {
             setQuantity(maxClaimable);
           } else if (value < 13939393939394) {
-            setQuantity(139393939393949);
+            setQuantity(13939393939394);
           } else {
             setQuantity(value);
           }
         }}
         value={quantity}
-        step={696969}
-        defaultValue={13939393939394 }
+        step={13939393939394}
+        defaultValue={13939393939394}
         className={`${styles.textInput} ${styles.noGapBottom}`}
       />
 
