@@ -286,7 +286,7 @@ const Home = () => {
       <hr className={styles.divider} />
 
       <div className={styles.claimGrid}>
-      <button onClick={() => setQuantity(maxClaimable)}>Max</button>
+      <button className={styles.mainButton} onClick={() => setQuantity(maxClaimable)}>Max</button>
       <input
         type="number"
         placeholder="Enter claim amount"
